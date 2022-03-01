@@ -32,3 +32,20 @@ sudo apt install ros-galactic-desktop
 ```
 source /opt/ros/galactic/setup.bash
 ```
+
+#### Source ROS2 using .bashrc
+```
+echo "# Source ROS2 Galactic" >> .bashrc
+echo "srouce /opt/ros/galactic/setup.bash" >> .bashrc
+```
+
+#### Validate ROS2 installation
+```
+# One terminal
+ros2 run demo_nodes_cpp talker
+
+# Second terminal
+ros2 run demo_nodes_py listener
+```
+
+
