@@ -1,0 +1,26 @@
+FROM ros:galactic-ros-base
+
+RUN cd /root/ \
+    && mkdir dev_ws
+
+RUN apt-get update \ 
+    && apt-get install -y python3-pip \
+    && pip3 install celery redis
+
+COPY ./src /root/dev_ws/src
+
+COPY ./install_dependencies.sh /root/dev_ws 
+
+RUN cd /root/dev_ws \
+    && apt-get update \
+    && rosdep update \
+    && bash install_dependencies.sh 
+
+RUN . /opt/ros/galactic/setup.sh \
+    && cd /root/dev_ws \
+    && colcon build 
+
+COPY celery_example/*.py /root/ 
+    
+
+CMD ["python3", "/root/test_celery.py"]
