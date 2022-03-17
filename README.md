@@ -1,3 +1,3 @@
 5G-ERA Reference NetApp Workshop
 
-0. [First workshop](Documentation/0_Prerequisites.md)
+0. [Prerequisities](Documentation/0_Prerequisites.md)
