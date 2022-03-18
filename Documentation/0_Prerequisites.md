@@ -66,10 +66,22 @@ ros2 run demo_nodes_cpp talker
 ros2 run demo_nodes_py listener
 ```
 
-### Download workshop repository
+### Prepare workshop files
 ```
 git clone https://github.com/5G-ERA/NetApp-Workshop.git
+cd NetApp-Workshop/NetApp_ros2_src/
+bash install_dependencies.sh
+source set_environment.sh
 ```
 
+#### Optional - Configure tmux
+Presenter of this workshop will `Terminal Multiplexer` with additional configuration for better experience. We will use the possibility to split window horizontally / vertically and supplement multiple terminal windows with one instance only.
+
+`bind-key` is kept in default setting to `Ctrl+b`
+
+Basic commands in updated config:
+* Split window vertically: `bind-key + |`
+* Split window horizontally: `bind-key + -`
+* Move cursor between window panes:  `bind-key, arrows`
 
 

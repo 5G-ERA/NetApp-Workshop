@@ -3,6 +3,12 @@
 [Prerequisities](Documentation/0_Prerequisites.md)
 
 ## Introduction
+```
+cd ~/NetApp-Workshop/
+git pull
+cd NetApp_ros2_src/
+colcon build
+```
 
 ## Demo - ImagePublisher / ResultSubscriber / DummyDetector
 ```
@@ -28,12 +34,19 @@ ros2 service call /control_service/stop ros2_5g_era_service_interfaces/Stop # TO
 TODO: Musí se upravit!!!
 ```
 # Terminal 1
+cd ~/NetApp-Workshop/NetApp_ros2_src/
+source install/local_setup.sh
 ros2 run ros2_5g_era_object_detection_standalone_py ml_service
 
 # Terminal 2
+cd ~/NetApp-Workshop/NetApp_ros2_src/
+source install/local_setup.sh
 ros2 run ros2_5g_era_robot_py robot_node
 
 # Terminal 3
+cd ~/NetApp-Workshop/NetApp_ros2_src/
+source install/local_setup.sh
+
 ## Start 
 ros2 service call robot_logic/start_service ros2_5g_era_robot_interfaces/srv/StartService "{service_base_name: /control_service}"
 
