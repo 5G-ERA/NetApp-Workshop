@@ -11,6 +11,7 @@ colcon build
 echo "## Source workshop environment" >> ~/.bashrc
 echo "source /home/ros/NetApp-Workshop/NetApp_ros2_src/install/local_setup.sh" >> ~/.bashrc
 echo "source /home/ros/NetApp-Workshop/NetApp_ros2_src/set_environment.sh" >> ~/.bashrc
+source ~/.bashrc
 ```
 
 The commands above assume that NetApp-Workshop repository is in the home directory.
