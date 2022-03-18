@@ -58,10 +58,17 @@ ros2 service call robot_logic/stop_service ros2_5g_era_robot_interfaces/srv/Stop
 TODO: Musí se upravit!!!
 ```
 # Terminal 1
-cd ~/NetApp-Workshop/NetApp_ros2_src/
-source install/local_setup.sh
-ros2 run ros2_5g_era_object_detection_standalone_py ml_service
+cd ~/NetApp-Workshop/NetApp_k8s_deploy/
 
+kubectl apply -f multus_config.yaml
+
+kubectl apply -f 5gera_css.yaml
+
+watch "microk8s.kubectl get all"
+```
+
+After 
+```
 # Terminal 2
 cd ~/NetApp-Workshop/NetApp_ros2_src/
 source install/local_setup.sh
