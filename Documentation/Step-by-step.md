@@ -38,19 +38,12 @@ ros2 service call /control_service/stop ros2_5g_era_service_interfaces/Stop # TO
 ## Demo - Robot / ML_service (Host system) - BACKUP
 ```
 # Terminal 1
-cd ~/NetApp-Workshop/NetApp_ros2_src/
-source install/local_setup.sh
 ros2 run ros2_5g_era_object_detection_standalone_py ml_service
 
 # Terminal 2
-cd ~/NetApp-Workshop/NetApp_ros2_src/
-source install/local_setup.sh
 ros2 run ros2_5g_era_robot_py robot_node
 
 # Terminal 3
-cd ~/NetApp-Workshop/NetApp_ros2_src/
-source install/local_setup.sh
-
 ## Start 
 ros2 service call robot_logic/start_service ros2_5g_era_robot_interfaces/srv/StartService "{service_base_name: /control_service}"
 
@@ -81,14 +74,9 @@ watch "ros2 topic list"
 After 
 ```
 # Terminal 3
-cd ~/NetApp-Workshop/NetApp_ros2_src/
-source install/local_setup.sh
 ros2 run ros2_5g_era_robot_py robot_node
 
 # Terminal 4
-cd ~/NetApp-Workshop/NetApp_ros2_src/
-source install/local_setup.sh
-
 ## Start 
 ros2 service call robot_logic/start_service ros2_5g_era_robot_interfaces/srv/StartService "{service_base_name: /control_service}"
 
@@ -96,4 +84,48 @@ ros2 service call robot_logic/start_service ros2_5g_era_robot_interfaces/srv/Sta
 ros2 service call robot_logic/stop_service ros2_5g_era_robot_interfaces/srv/StopService
 ```
 
+Delete deployed CSS
+
+```
+kubectl delete deployment.apps/ros-css-deployment
+```
 ## Demo - Robot / ML_service - distributed (Kubernetes)
+
+```
+# Terminal 1
+cd ~/NetApp-Workshop/NetApp_k8_deploy/ #TODO: Change to NetApp_k8s_deploy ??
+
+
+kubectl apply -f 5gera_ml_service_distributed.yaml
+
+watch "microk8s.kubectl get all"
+```
+
+```
+# Terminal 2
+watch "ros2 topic list"
+```
+
+After 
+```
+# Terminal 3
+ros2 run ros2_5g_era_robot_py robot_node
+
+# Terminal 4
+## Start 
+ros2 service call robot_logic/start_service ros2_5g_era_robot_interfaces/srv/StartService "{service_base_name: /control_service}"
+
+## Stop
+ros2 service call robot_logic/stop_service ros2_5g_era_robot_interfaces/srv/StopService
+```
+
+Delete all deployments and services
+
+```
+kubectl delete deployment.apps/ml-worker-deployment
+kubectl delete deployment.apps/distributed-css-deployment
+kubectl delete deployment.apps/redis-deployment
+kubectl delete deployment.apps/rabbit-deployment
+kubectl delete service/rabbitmq-service
+kubectl delete service/redis-service
+```
