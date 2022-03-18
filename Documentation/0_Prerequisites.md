@@ -1,5 +1,8 @@
 # Prerequisities
 
+This file describes prerequisities which has to be fulfilled by each workhop attendent before the 5G-ERA Workshop 3 - "Reference NetApp".
+Please be sure, that all steps were finished before the workshop.
+
 ## Workshop environment ready
 
 This workshop builds on environment used in 5G-ERA Workshop 1 - "5G-ERA Middleware". Workshop attendents have to use this environment. In case, that your environment is not ready, you may download prepared virtual machine or configure your host system following configuration instructions. Both were created by University of Bedfordshire for 5G-ERA Workshop 1
@@ -9,6 +12,8 @@ This workshop builds on environment used in 5G-ERA Workshop 1 - "5G-ERA Middlewa
 * [VM Confiugration](VM_configuration.md)
 
 ## Further steps
+To be able to follow this workshop, few further steps have to be completed to get the environment ready for use.
+
 ### Install ROS2 Galactic
 This guide follows official ROS2 Galactic installation guide - https://docs.ros.org/en/galactic/Installation/Ubuntu-Install-Debians.html
 
@@ -30,20 +35,29 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-a
 ```
 sudo apt update
 sudo apt install ros-galactic-desktop
+
+
+sudo apt install -y ros-galactic-ros-base ros-galactic-demo-nodes*
+sudo apt install -y python3-rosdep g++ python3-colcon-common-extensions tmux
+sudo rosdep init
+rosdep update
 ```
 
-#### Environment setup
-```
-source /opt/ros/galactic/setup.bash
-```
+#### Updating .bashrc
+Add sourcing of ROS2 Galactic and define kubectl alias for every open terminal window.
 
-#### Source ROS2 using .bashrc
 ```
-echo "# Source ROS2 Galactic" >> .bashrc
-echo "srouce /opt/ros/galactic/setup.bash" >> .bashrc
+echo "# 5G-ERA Workshop - Reference NetApp" >> ~/.bashrc
+echo "## Source ROS2 Galactic" >> ~/.bashrc
+echo "source /opt/ros/galactic/setup.bash" >> ~/.bashrc
+echo "## Kubectl alias" >> ~/.bashrc
+echo "alias kubectl=microk8s.kubectl" >> ~/.bashrc
+
+source ~/.bashrc
 ```
 
 #### Validate ROS2 installation
+Run simple ROS2 talker-listener demo in two terminal windows.
 ```
 # One terminal
 ros2 run demo_nodes_cpp talker
@@ -51,3 +65,11 @@ ros2 run demo_nodes_cpp talker
 # Second terminal
 ros2 run demo_nodes_py listener
 ```
+
+### Download workshop repository
+```
+git clone https://github.com/5G-ERA/NetApp-Workshop.git
+```
+
+
+
