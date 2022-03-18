@@ -36,11 +36,60 @@ kubectl apply -f multus_config.yaml
 ```
 
 
-### 5gera_css.yaml
+### 5gera_ml_service_standalone.yaml
 
-Contains definition of one kubernetes pod, which will run the but5gera/css:latest docker image with the CSS (control service server). It has the hostNetwork enabled by default, which means any the ROS2 interface of the CSS is available on the host system. The CSS is deployed using:
+Contains definition of one kubernetes deployment, which will run the but5gera/ros-ml_service-standalone:latest docker image with the CSS (control service server). It has the hostNetwork enabled by default, which means any the ROS2 interface of the CSS is available on the host system. The CSS is deployed using:
 
 ```bash
 kubectl apply -f 5gera_css.yaml
 ```
+
+To remove the deployment, simply use
+
+```bash
+kubectl delete deployment.apps/ros-css-deployment
+```
+
+
+### 5gera_ml_service_distributed.yaml
+
+Contains four deployments:
+
+* ml-worker
+  * runs the face detection service
+  * defines the CELERY_BROKER_URL and CELERY_RESULT_BACKEND env variables. The values are based on the rabbit and redis services in the worker.yaml config - the default values are filled in. 
+* distributed-css
+  * runs the distributed variant of css
+  * defines the same env variables as the ml-worker
+* rabbit
+* redis
+
+To allow ROS2 connection from the host, the "hostNetwork: true" is defined in each Deployment (four in total) and URLs for RabbitMQ and Redis are set to localhost
+
+```yaml
+env:
+- name: CELERY_BROKER_URL
+  value: "amqp://guest:guest@localhost:5672"
+- name: CELERY_RESULT_BACKEND
+  value: "redis://localhost/"
+```
+
+To deploy everything, just use:
+
+```bash
+kubectl apply -f 5gera_css.yaml
+```
+
+To remove all deployments and services, use
+
+```bash
+kubectl delete deployment.apps/ml-worker-deployment
+kubectl delete deployment.apps/distributed-css-deployment
+kubectl delete deployment.apps/redis-deployment
+kubectl delete deployment.apps/rabbit-deployment
+kubectl delete service/rabbitmq-service
+kubectl delete service/redis-service
+```
+
+
 
