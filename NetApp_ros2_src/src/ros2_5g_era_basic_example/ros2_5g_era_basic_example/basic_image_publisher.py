@@ -14,8 +14,12 @@ from cv_bridge import CvBridge  # Package to convert between ROS and OpenCV Imag
 import cv2  # OpenCV library
 import os
 
-IMG_PATH = "assets/test_image.jpg"
-VIDEO_PATH = "assets/test_video.mp4"
+from ros2_5g_era_helpers import get_path_to_assets
+
+path_to_assets = get_path_to_assets()
+
+IMG_PATH = os.path.join(path_to_assets, "test_image.jpg")
+VIDEO_PATH = os.path.join(path_to_assets, "test_video.mp4")
 
 
 class ImagePublisher(Node):
