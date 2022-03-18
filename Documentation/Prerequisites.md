@@ -11,14 +11,20 @@ This workshop builds on environment used in 5G-ERA Workshop 1 - "5G-ERA Middlewa
 
 * [VM Confiugration](VM_configuration.md)
 
+### VirtualBox host network
+For freshly installed VirtualBox is necessary to create VirtualBox Host Network to get the downloaded image running.
+It can be simply added in VirtualBox GUI `File --> Host Network Manager... --> Create`. After this, created VirtualBox Host Network will be connected to the imported image.
+
+
 ## Further steps
 To be able to follow this workshop, few further steps have to be completed to get the environment ready for use.
 
 ### Install ROS2 Galactic
 This guide follows official ROS2 Galactic installation guide - https://docs.ros.org/en/galactic/Installation/Ubuntu-Install-Debians.html
 
+<!--
 #### Setup sources
-```
+```bash
 # Enable Universe repository
 sudo apt install software-properties-common
 sudo add-apt-repository universe
@@ -30,9 +36,19 @@ sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o
 # Add repository to source list
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(source /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
 ```
+-->
+
+#### Setup sources
+```bash
+# Add ROS2 repository to system
+sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+
+# Add repository to source list
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(source /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+```
 
 #### Install ROS2 packages
-```
+```bash
 sudo apt update
 sudo apt install ros-galactic-desktop
 
@@ -46,19 +62,18 @@ rosdep update
 #### Updating .bashrc
 Add sourcing of ROS2 Galactic and define kubectl alias for every open terminal window.
 
-```
+```bash
 echo "# 5G-ERA Workshop - Reference NetApp" >> ~/.bashrc
-echo "## Source ROS2 Galactic" >> ~/.bashrc
-echo "source /opt/ros/galactic/setup.bash" >> ~/.bashrc
 echo "## Kubectl alias" >> ~/.bashrc
 echo "alias kubectl=microk8s.kubectl" >> ~/.bashrc
-
+echo "## Source ROS2 Galactic" >> ~/.bashrc
+echo "source /opt/ros/galactic/setup.bash" >> ~/.bashrc
 source ~/.bashrc
 ```
 
 #### Validate ROS2 installation
 Run simple ROS2 talker-listener demo in two terminal windows.
-```
+```bash
 # One terminal
 ros2 run demo_nodes_cpp talker
 
@@ -67,22 +82,23 @@ ros2 run demo_nodes_py listener
 ```
 
 ### Prepare workshop files
-```
+```bash
 git clone https://github.com/5G-ERA/NetApp-Workshop.git
-cd NetApp-Workshop/NetApp_ros2_src/
+cd ~/NetApp-Workshop/NetApp_ros2_src/
 bash install_dependencies.sh
 source set_environment.sh
 ```
-
 #### Optional - Configure tmux
 Presenter of this workshop will `Terminal Multiplexer` with additional configuration for better experience. We will use the possibility to split window horizontally / vertically and supplement multiple terminal windows with one instance only.
 
-`bind-key` is kept in default setting to `Ctrl+b`
+`bind-key` is kept in default setting to `Ctrl+b`. Bind key has to be pressed firstly, then released and followed by another defined key.
 
 Basic commands in updated config:
-* Split window vertically: `bind-key + |`
-* Split window horizontally: `bind-key + -`
-* Move cursor between window panes:  `bind-key, arrows`
+* Split window vertically: `bind-key,  |` 
+* Split window horizontally: `bind-key, -`
+* Move cursor between window panes:  `Alt + arrows`
+* New terminal window: `Ctrl + DOWN (arrow)`
+* Switch between windows: `Ctrl + LEFT/RIGHT (arrow)`
 
 Copy setting and close terminal.
 ```bash
