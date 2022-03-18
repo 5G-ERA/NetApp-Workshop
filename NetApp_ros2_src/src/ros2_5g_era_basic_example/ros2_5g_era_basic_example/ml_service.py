@@ -14,7 +14,7 @@ from rclpy.executors import Executor
 from sensor_msgs.msg import Image  # Image is the message type
 from cv_bridge import CvBridge  # Package to convert between ROS and OpenCV Images
 import cv2  # OpenCV library
-from ros_5g_era_object_detection.common import ThreadBase, get_logger as get_thread_logger
+from ros2_5g_era_basic_example.common import ThreadBase, get_logger as get_thread_logger
 from concurrent.futures import ThreadPoolExecutor
 
 
