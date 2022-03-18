@@ -10,7 +10,7 @@ cd NetApp_ros2_src/
 colcon build
 echo "## Source workshop environment" >> ~/.bashrc
 echo "source /home/ros/NetApp-Workshop/NetApp_ros2_src/install/local_setup.sh" >> ~/.bashrc
-echo "source /home/ros/NetApp-Workshop/NetApp_ros2_src/set_environment.sh" >> ~/.bashrc
+echo "cd /home/ros/NetApp-Workshop/NetApp_ros2_src/;source set_environment.sh; cd ~-" >> ~/.bashrc
 source ~/.bashrc
 ```
 
