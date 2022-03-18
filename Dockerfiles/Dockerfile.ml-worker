@@ -1,9 +1,0 @@
-FROM python:3.8
-
-RUN pip3 install celery==5.0.5 redis
-
-COPY ./celery_example/task.py /root/task.py
-
-COPY ./docker/run_celery.sh /root/run_celery.sh
-
-CMD ["/bin/bash", "/root/run_celery.sh"]
