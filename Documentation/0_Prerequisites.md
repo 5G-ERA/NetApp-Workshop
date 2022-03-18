@@ -84,4 +84,10 @@ Basic commands in updated config:
 * Split window horizontally: `bind-key + -`
 * Move cursor between window panes:  `bind-key, arrows`
 
+Copy setting and close terminal.
+```bash
+cp ~/NetApp-Workshop/.tmux.conf ~/.tmux.conf
+```
+Run `tmux` in new terminal window.
+
 
