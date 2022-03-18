@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: css
-        image: but5gera/ros-css:latest
+        image: but5gera/but5gera/ros-ml_service-standalone:latest
         imagePullPolicy: Always
         resources: {}        
         env:
