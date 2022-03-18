@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ros-css-deployment
+  labels:
+    app: ros-css
+  annotations:
+    k8s.v1.cni.cncf.io/networks: ros-network
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ros-css
+  template:
+    metadata:
+      labels:
+        app: ros-css
+      annotations:
+        k8s.v1.cni.cncf.io/networks: ros-network
+    spec:
+      containers:
+      - name: css
+        image: but5gera/ros-css:latest
+        imagePullPolicy: Always
+        resources: {}        
+        env:
+        - name: ROS2_5G_ERA_ASSETS_PATH
+          value: /root/ML_repo/assets
+      hostNetwork: true
