@@ -7,8 +7,8 @@ Please be sure, that all steps were finished before the workshop.
 
 This workshop builds on environment used in 5G-ERA Workshop 1 - "5G-ERA Middleware". Workshop attendents have to use this environment. In case, that your environment is not ready, you may download prepared virtual machine or configure your host system following configuration instructions. Both were created by University of Bedfordshire for 5G-ERA Workshop 1
 
-* [Workshop VM](https://universityofbedfordshire-my.sharepoint.com/:u:/g/personal/bartosz_bratus_study_beds_ac_uk/ETj6QI5cNN9Bv11wi6bRL4sBrF89RMamMbJ3pfcN8i2W6w?e=zAwf6c) 
-
+* [Workshop VM](https://universityofbedfordshire-my.sharepoint.com/:u:/g/personal/bartosz_bratus_study_beds_ac_uk/ETj6QI5cNN9Bv11wi6bRL4sBrF89RMamMbJ3pfcN8i2W6w?e=zAwf6c) Hosted by University of Bedfordshire - Sharepoint. Size: 5GB
+* [Workshop VM - Mirror](https://nextcloud.fit.vutbr.cz/s/8HycYLqawximqrf) Hosted by Brno Univesity of Technology - Nextcloud. Size: 5GB
 * [VM Confiugration](VM_configuration.md)
 
 ### VirtualBox host network
