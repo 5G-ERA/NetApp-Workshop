@@ -12,7 +12,7 @@ This workshop builds on environment used in 5G-ERA Workshop 1 - "5G-ERA Middlewa
 * [VM Confiugration](VM_configuration.md)
 
 ### VirtualBox host network
-For freshly installed VirtualBox is necessary to create VirtualBox Host Network to get the downloaded image running.
+For freshly installed VirtualBox it is necessary to create VirtualBox Host Network to get the downloaded image running.
 It can be simply added in VirtualBox GUI `File --> Host Network Manager... --> Create`. After this, created VirtualBox Host Network will be connected to the imported image.
 
 
