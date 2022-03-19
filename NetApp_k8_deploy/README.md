@@ -1,4 +1,4 @@
-# kubernetes deploy
+# Kubernetes deploy
 
 Scripts for kubernetes deploy of all-in-one version of CSS (control service server). 
 

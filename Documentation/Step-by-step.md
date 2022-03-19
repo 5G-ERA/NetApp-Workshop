@@ -105,6 +105,8 @@ ros2 service call robot_logic/stop_service ros2_5g_era_robot_interfaces/srv/Stop
 
 ## Demo - Robot / ML_service (Kubernetes)
 
+[Kubernetes Deploy instructions](../NetApp_k8_deploy/README.md)
+
 ![ALT: Image placeholder](Images/image-placeholder.jpg "IMAGE_PLACEHOLDER_CAPTION")
 
 ```bash
@@ -141,6 +143,7 @@ Delete deployed CSS
 ```bash
 kubectl delete deployment.apps/ros-css-deployment
 ```
+
 ## Demo - Robot / ML_service - distributed (Kubernetes)
 
 ![ALT: Image placeholder](Images/image-placeholder.jpg "IMAGE_PLACEHOLDER_CAPTION")
@@ -153,6 +156,33 @@ cd ~/NetApp-Workshop/NetApp_k8_deploy/ #TODO: Change to NetApp_k8s_deploy ??
 kubectl apply -f 5gera_ml_service_distributed.yaml
 
 watch "microk8s.kubectl get all"
+```
+
+### OUTPUT
+
+```bash
+NAME                                              READY   STATUS    RESTARTS      AGE
+pod/rabbit-deployment-644754765-m9s8j             1/1     Running   3 (61s ago)   19h
+pod/ml-worker-deployment-6f89c9cbdc-n7v88         1/1     Running   3 (61s ago)   19h
+pod/redis-deployment-6d94d9bb58-57ksg             1/1     Running   3 (61s ago)   19h
+pod/distributed-css-deployment-7bb85d59bd-9vj4l   1/1     Running   3 (61s ago)   19h
+
+NAME                       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+service/kubernetes         ClusterIP   10.152.183.1     <none>        443/TCP    46d
+service/rabbitmq-service   ClusterIP   10.152.183.213   <none>        5672/TCP   19h
+service/redis-service      ClusterIP   10.152.183.158   <none>        6379/TCP   19h
+
+NAME                                         READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/rabbit-deployment            1/1     1            1           19h
+deployment.apps/ml-worker-deployment         1/1     1            1           19h
+deployment.apps/redis-deployment             1/1     1            1           19h
+deployment.apps/distributed-css-deployment   1/1     1            1           19h
+
+NAME                                                    DESIRED   CURRENT   READY   AGE
+replicaset.apps/rabbit-deployment-644754765             1         1         1       19h
+replicaset.apps/ml-worker-deployment-6f89c9cbdc         1         1         1       19h
+replicaset.apps/redis-deployment-6d94d9bb58             1         1         1       19h
+replicaset.apps/distributed-css-deployment-7bb85d59bd   1         1         1       19h
 ```
 
 ```bash
