@@ -80,6 +80,11 @@ In this example, we will use `ml_service` part of `ros2_5g_era_object_detection_
 ![ALT: Image placeholder](Images/image-placeholder.jpg "IMAGE_PLACEHOLDER_CAPTION")
 
 Let's start our Object Detection ML NetApp in standalone variant. For purpose of this workshop, this service is implemented with simple Face Detector based on OpenCV library. Desired output of this object detection service is the `bounding box [x,y,w,h]` around people's faces. For the completness, this service also returns `object class` and `detection score` as detection algorithm inside may vary. 
+
+ADVANTAGES: Fast processing, latencies close to zero (data processing). Ready for image sequences dependent processing (e.g. object movement evaluation).
+
+DISADVANTAGES: Possibly lower number of connected robots to single instance of the ML service (hardware dependent).
+
 ```bash
 # Terminal 1
 ros2 run ros2_5g_era_object_detection_standalone_py ml_service
@@ -149,7 +154,7 @@ ros2 service call robot_logic/stop_service ros2_5g_era_robot_interfaces/srv/Stop
 Modules: Robot / ML_service
 
 Let's move on from host system and deploy Standalone ML Service in Kubernetes. In this workshop, will we use `microk8s`, which is already prepared in **Workshop VM**. Update of configuration YAML files for Multus, may be needed. We can check that using
-[Kubernetes Deploy instructions](../NetApp_k8_deploy/README.md).
+[Kubernetes Deploy instructions](../NetApp_k8s_deploy/README.md).
 
 ### Simple Robot
 
@@ -169,7 +174,7 @@ First of all, ML Service has to be deployed in Kubernetes cluster. Multus config
 In that case, we can apply `multus_config_vm.yaml` followed by `5gera_ml_service_standalone.yaml` and wait for their start.
 ```bash
 # Terminal 1
-cd ~/NetApp-Workshop/NetApp_k8_deploy/ #TODO: Change to NetApp_k8s_deploy ??
+cd ~/NetApp-Workshop/NetApp_k8s_deploy/ 
 
 kubectl apply -f multus_config_vm.yaml # Possibly multus_config.yaml could work for host-system
 
@@ -207,15 +212,40 @@ kubectl delete deployment.apps/ros-css-deployment
 
 ## Distributed ML service in Kubernetes
 
-### TODO: Tohle ještě není dokončené!!
+Distributed machine learning service is composed from multiple parts, which are deployed in Kubernetes cluster individually. Standalone version is broken down into four parts:
 
-Modules: Robot / ML_service - distributed (Kubernetes)
+1. **ROS2 Control Service Server (ML interface)**
+2. **Task broker** - System for distributing tasks to running worker (Celery) and distribution channel (RabbitMQ). 
+3. **Workers** - One or more instances of machine learning service (object detection) serving tasks.
+4. **Result storage** - Celery backend for storing results of finished tasks. (Redis)
+
+ADVANTAGES: Distributed processing. Possibility of scaling using more workers.
+
+DISADVANTAGES: Slower processing, bigger latencies. Limited number of ML services suitable for distributed processing. 
+
+![ALT: Image placeholder](Images/image-placeholder.jpg "Distributed ML service scheme.")
+
+### Deploy and test
+All parts of distributed ML service and their components are defined in `5gera_ml_service_distributed.yaml`. There are two environment variables definedm, which has to be set properly:
+
+```yaml
+env:
+- name: CELERY_BROKER_URL
+    value: "amqp://guest:guest@localhost:5672"
+- name: CELERY_RESULT_BACKEND
+    value: "redis://localhost/"
+```
+Each of four parts described previously may be deployed into different Kubernetes clusters. Only two conditions has to be met.
+
+1. ML interface has to be visible for robots, which wants to process data.
+2. Correct external IP addresses for RabbitMQ and Redis has to be set everywhere.
+
 
 ![ALT: Image placeholder](Images/image-placeholder.jpg "IMAGE_PLACEHOLDER_CAPTION")
-
+We will deploy distributed variant inside single Kubernetes cluster running on one computer. Both required URLs are set to `localhost` in deployment YAML file.
 ```bash
 # Terminal 1
-cd ~/NetApp-Workshop/NetApp_k8_deploy/ #TODO: Change to NetApp_k8s_deploy ??
+cd ~/NetApp-Workshop/NetApp_k8s_deploy/
 
 
 kubectl apply -f 5gera_ml_service_distributed.yaml
@@ -250,12 +280,13 @@ replicaset.apps/redis-deployment-6d94d9bb58             1         1         1   
 replicaset.apps/distributed-css-deployment-7bb85d59bd   1         1         1       19h
 ```
 
+Let's watch, what topics are available every 1 second.
 ```bash
 # Terminal 2
 watch "ros2 topic list"
 ```
 
-When all Kubernetes nodes are ready
+After ML service deployment in Kubernetes, we can start `robot_node` and launch data processing using `robot_logic/start_service` call. Processing will stop after `robot_logic/stop_service` call. 
 ```bash
 # Terminal 3
 ros2 run ros2_5g_era_robot_py robot_node
