@@ -61,7 +61,9 @@ Lastly, we run `ImagePublisher` Node, which reads the video file, converts each 
 ros2 run ros2_5g_era_basic_example image_publisher --ros-args --remap images:=/robot1_images
 ```
 
-## Demo - ML_service / Service Call / ImagePublisher / ResultSubscriber
+## Standalone ML service - Basics
+
+ml_service / Service Call / ImagePublisher / ResultSubscriber
 
 ![ALT: Image placeholder](Images/image-placeholder.jpg "IMAGE_PLACEHOLDER_CAPTION")
 ```bash
@@ -103,7 +105,13 @@ ros2 service call robot_logic/stop_service ros2_5g_era_robot_interfaces/srv/Stop
 -->
 
 
-## Demo - Robot / ML_service (Kubernetes)
+## Standalone ML service in Kubernetes
+
+Modules: Robot / ML_service
+
+TODO: Robot introduction
+
+
 
 [Kubernetes Deploy instructions](../NetApp_k8_deploy/README.md)
 
@@ -144,7 +152,9 @@ Delete deployed CSS
 kubectl delete deployment.apps/ros-css-deployment
 ```
 
-## Demo - Robot / ML_service - distributed (Kubernetes)
+## Distributed ML service in Kubernetes
+
+Modules: Robot / ML_service - distributed (Kubernetes)
 
 ![ALT: Image placeholder](Images/image-placeholder.jpg "IMAGE_PLACEHOLDER_CAPTION")
 
@@ -190,7 +200,7 @@ replicaset.apps/distributed-css-deployment-7bb85d59bd   1         1         1   
 watch "ros2 topic list"
 ```
 
-After 
+When all Kubernetes nodes are ready
 ```bash
 # Terminal 3
 ros2 run ros2_5g_era_robot_py robot_node
