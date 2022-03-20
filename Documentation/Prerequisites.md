@@ -2,6 +2,7 @@
 
 This file describes prerequisities which has to be fulfilled by each workhop attendent before the 5G-ERA Workshop 3 - "Reference NetApp".
 Please be sure, that all steps were finished before the workshop.
+Online version of this file is available [here](https://github.com/5G-ERA/NetApp-Workshop/blob/81991375c1d8f407822297841d3c572c1a73b1c2/Documentation/Prerequisites.md).
 
 ## Workshop environment ready
 
@@ -82,6 +83,7 @@ ros2 run demo_nodes_py listener
 ```
 
 ### Prepare workshop files
+Clone source files for this workshop from [5G-ERA GitHub](https://github.com/5G-ERA/NetApp-Workshop)
 ```bash
 git clone https://github.com/5G-ERA/NetApp-Workshop.git
 cd ~/NetApp-Workshop/NetApp_ros2_src/

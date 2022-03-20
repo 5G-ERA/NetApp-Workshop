@@ -13,7 +13,13 @@ The workshop will cover the following topics:
 
 Before start of this workshop, please be sure, that you complete all steps from [Prerequisities](Documentation/0_Prerequisites.md).
 
-## Introduction
+## Introduction to the 5G-ERA Reference NetApp
+
+![Principle of 5G-ERA NetApp](Images/ML_service_principles.gif "ML service principles")
+
+## Let's start
+
+First of all, we will get the newest version of source files for this workshop, build the ROS2 packages and ensure, that we will have built packages available in all terminal windows by updating `.bashrc` one last time.
 
 ### Update repository and build ROS2 5G-ERA Reference NetApp
 ```bash
@@ -63,19 +69,44 @@ ros2 run ros2_5g_era_basic_example image_publisher --ros-args --remap images:=/r
 
 ## Standalone ML service - Basics
 
-ml_service / Service Call / ImagePublisher / ResultSubscriber
+Before start of this part, communication interface between robot and ML services has to be defined - [5G-ERA ML Control Service Interface](CSS_Interface.md). 
+This communication interface needs to be implemented by robot in order to use any of the ML services.
+
+
+In this example, we will use `ml_service` part of `ros2_5g_era_object_detection_standalone_py` package, `image_publisher`, `results_listener` from previous example and definition of `ros2_5g_era_service_interfaces` for service call.
+ 
+
 
 ![ALT: Image placeholder](Images/image-placeholder.jpg "IMAGE_PLACEHOLDER_CAPTION")
+
+Let's start our Object Detection ML NetApp in standalone variant. For purpose of this workshop, this service is implemented with simple Face Detector based on OpenCV library. Desired output of this object detection service is the `bounding box [x,y,w,h]` around people's faces. For the completness, this service also returns `object class` and `detection score` as detection algorithm inside may vary. 
 ```bash
 # Terminal 1
 ros2 run ros2_5g_era_object_detection_standalone_py ml_service
+```
 
+After it is started, the `ml_service` waits for clients (robots) to connect. We can se, that ROS2 services inside `control_service` node (services?) are now available.
 
-# Terminal 2 - Service call
+```bash
+# TODO: output of `ros2 node list` maybe `ros2 service list` ??
+```
+
+We will simulate robot behaviour and complete ROS2 service call to `/control_service/start` service using `ros2_5g_era_service_interfaces/Start` interfaces.
+
+```bash
+# Terminal 2 - Service call - Start
 ros2 service call /control_service/start ros2_5g_era_service_interfaces/Start 
+```
 
-ros2 service call /control_service/stop ros2_5g_era_service_interfaces/Stop 'task_id: "{id}"'
 
+**Control Service Server** inside running instance of `ml_service` will generated unique identifier for this task (UUID) and launches new ROS2 NODE with dedicated `ImageSubscriber` and `ResultPublisher` objects for this task, generating `/tasks/{id}/data` and `/tasks/{id}/results` topics, where `{id}` is generated unique indentifier (UUID).
+
+```bash
+# TODO: Sample output of service call
+```
+After that, we can start `result_listener` and `image_publisher` from `ros2_5g_era_basic_example` package as in previous part of this workshop. In this time, we will use the generated topics for remapping.
+
+```bash
 # Termial 3
 ros2 run ros2_5g_era_basic_example result_listener --ros-args --remap chatter:=/tasks/{id}/results
 # or
@@ -84,6 +115,12 @@ ros2 topic echo /tasks/{id}/results
 # Terminal 4
 ros2 run ros2_5g_era_basic_example image_publisher --ros-args --remap images:=/tasks/{id}/data
 
+```
+
+We can call `Stop service` with parameter `task_id: "{id}"` where `{id}` is the UUID generated for this task by ML Service, when `Start service` was called.
+```bash
+# Terminal 2 - Service call - Stop
+ros2 service call /control_service/stop ros2_5g_era_service_interfaces/Stop 'task_id: "{id}"'
 ```
 
 <!-- 
@@ -107,33 +144,48 @@ ros2 service call robot_logic/stop_service ros2_5g_era_robot_interfaces/srv/Stop
 
 ## Standalone ML service in Kubernetes
 
-Modules: Robot / ML_service
-
-TODO: Robot introduction
-
-
-
-[Kubernetes Deploy instructions](../NetApp_k8_deploy/README.md)
-
 ![ALT: Image placeholder](Images/image-placeholder.jpg "IMAGE_PLACEHOLDER_CAPTION")
 
+Modules: Robot / ML_service
+
+Let's move on from host system and deploy Standalone ML Service in Kubernetes. In this workshop, will we use `microk8s`, which is already prepared in **Workshop VM**. Update of configuration YAML files for Multus, may be needed. We can check that using
+[Kubernetes Deploy instructions](../NetApp_k8_deploy/README.md).
+
+### Simple Robot
+
+For purpose of this workshop, simple robot in ROS2 was created. The robot implements **Client** part of **ML Control Service** for communication with ML Service. Despite that, it has its own ROS2 `robot_logic` node with Trigger with `ros2_5g_era_robot_interfaces` for user commands.
+
+`robot_logic/start_service` call will start **Control Service Client** and sends `Start` requests to server, starts internal image publisher and results subscriber. 
+
+#TODO: Nebude tam /robot_logic?
+
+After that, the robot simply reads a video file and sends individual video frames to `ml_service` for object detection.
+
+`robot_logic/stop_service` will stop sending video data and sends `Stop` request to server.
+
+
+### Deploy and test
+First of all, ML Service has to be deployed in Kubernetes cluster. Multus configuration was already checked.
+In that case, we can apply `multus_config_vm.yaml` followed by `5gera_ml_service_standalone.yaml` and wait for their start.
 ```bash
 # Terminal 1
 cd ~/NetApp-Workshop/NetApp_k8_deploy/ #TODO: Change to NetApp_k8s_deploy ??
 
-kubectl apply -f multus_config.yaml
+kubectl apply -f multus_config_vm.yaml # Possibly multus_config.yaml could work for host-system
 
 kubectl apply -f 5gera_ml_service_standalone.yaml
 
 watch "microk8s.kubectl get all"
 ```
 
+Let's watch, what topics are available every 1 second.
 ```bash
 # Terminal 2
-watch "ros2 topic list"
+watch -n 1 "ros2 topic list"
 ```
 
-After 
+After ML service deployment in Kubernetes, we can start `robot_node` and launch data processing using `robot_logic/start_service` call. Processing will stop after `robot_logic/stop_service` call.
+
 ```bash
 # Terminal 3
 ros2 run ros2_5g_era_robot_py robot_node
@@ -146,13 +198,16 @@ ros2 service call robot_logic/start_service ros2_5g_era_robot_interfaces/srv/Sta
 ros2 service call robot_logic/stop_service ros2_5g_era_robot_interfaces/srv/StopService
 ```
 
-Delete deployed CSS
+Delete deployed ML service using following command.
 
 ```bash
 kubectl delete deployment.apps/ros-css-deployment
+# TODO: Check deployment name
 ```
 
 ## Distributed ML service in Kubernetes
+
+### TODO: Tohle ještě není dokončené!!
 
 Modules: Robot / ML_service - distributed (Kubernetes)
 
