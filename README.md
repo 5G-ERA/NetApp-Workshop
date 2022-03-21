@@ -85,6 +85,7 @@ The commands above assume that the NetApp-Workshop repository is in the home dir
 In this example, we will use three parts of `ros2_5g_era_basic_example` package (`ml_service`, `image_publisher`, `results_listener`). 
 
 ![Basic Example Scheme](Documentation/Images/Scheme_Basic_example.png "Basic Example Scheme")
+
 This figure represents structure of this example.
 
 First, we start the `ml_service` with the `DummyDetector` worker thread inside. At the start, `ml_service` will generate names for input and output topics that will be used by `image_publisher` and `results_listener`.
@@ -119,6 +120,7 @@ This communication interface needs to be implemented by the robot in order to us
 Let's start our *Object Detection ML NetApp* in a standalone variant. For the purpose of this workshop, this service is implemented with a simple Face Detector from OpenCV library. The output of this object detection service is the `bounding box [x,y,w,h]` around people's faces. For completness, this service also returns `object class` and `detection score`.
 
 ![Standalone (basics) scheme](Documentation/Images/Scheme_Standalone_basics.png "Standalone (basics) Scheme")
+
 This figure represents structure of this example.
 
 In this example, we will use `ml_service` part of `ros2_5g_era_object_detection_standalone_py` package, `image_publisher`, `results_listener` from previous example and definition of `ros2_5g_era_service_interfaces` for service call.
@@ -226,6 +228,7 @@ After that, the robot simply reads a video file and sends individual video frame
 ### Deploy and test
 
 ![Standalone (Kubernetes) scheme](Documentation/Images/Scheme_Standalone_Kubernetes.png "Standalone (Kubernetes) scheme")
+
 This figure represents structure of this example.
 
 First of all, the ML Service has to be deployed in the Kubernetes cluster. Multus configuration was already checked.
@@ -292,10 +295,12 @@ The Distributed Machine Learning service is composed of multiple parts, which ar
 4. **Result storage** - Celery backend for storing results of finished tasks. (Redis)
 
 ![Distributed (Kubernetes) scheme](Documentation/Images/ML_Distributed_highlevel.png "Distributed ML service scheme (high level).")
+
 This figure shows high-level concepts and different types of communication used for *distributed ML service*.
 
 ### Deploy and test
 ![Distributed (Kubernetes) scheme](Documentation/Images/Scheme_Distributed_Kubernetes.png "Distributed ML service scheme.")
+
 This figure represents structure of this example.
 
 All parts of distributed ML service and their components are defined in `5gera_ml_service_distributed.yaml`. There are two environment variables, which has to be set properly:
@@ -314,6 +319,7 @@ Each of the four parts described previously may be deployed into different Kuber
 
 
 ![Kubernetes cluest visualisation](Documentation/Images/K8S_cluster_distributed_variant.png "Kubernetes cluest visualisation")
+
 This figure shows visualisation of Kubernetes cluster and connections between pods and services. This structure will be deployed using configuration YAML file.
 
 We will deploy the distributed variant inside a single Kubernetes cluster running on one computer. Both required URLs are set to `localhost` in the deployment YAML file.
