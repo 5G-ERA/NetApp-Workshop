@@ -9,7 +9,7 @@ Online version of this file is available [here](https://github.com/5G-ERA/NetApp
 This workshop builds on environment used in 5G-ERA Workshop 1 - "5G-ERA Middleware". Workshop attendents have to use this environment. In case, that your environment is not ready, you may download prepared virtual machine or configure your host system following configuration instructions. Both were created by University of Bedfordshire for 5G-ERA Workshop 1.
 
 * [Workshop VM](https://universityofbedfordshire-my.sharepoint.com/:u:/g/personal/bartosz_bratus_study_beds_ac_uk/ETj6QI5cNN9Bv11wi6bRL4sBrF89RMamMbJ3pfcN8i2W6w?e=zAwf6c) (Size: 5GB. Hosted by University of Bedfordshire - Sharepoint)
-* [Workshop VM - Mirror](https://nextcloud.fit.vutbr.cz/s/8HycYLqawximqrf) (Size: 5GB. Hosted by Brno Univesity of Technology - Nextcloud)
+* [Workshop VM - Mirror](https://nextcloud.fit.vutbr.cz/s/8HycYLqawximqrf) (Size: 5GB. Hosted by Brno Univesity of Technology - Nextcloud) - Use this link if you face difficulties when downloading from the original source.
 * [VM Configuration](VM_configuration.md)
 
 ### VirtualBox host network
@@ -51,9 +51,6 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-a
 #### Install ROS2 packages
 ```bash
 sudo apt update
-sudo apt install ros-galactic-desktop
-
-
 sudo apt install -y ros-galactic-ros-base ros-galactic-demo-nodes*
 sudo apt install -y python3-rosdep g++ python3-colcon-common-extensions tmux
 sudo rosdep init
