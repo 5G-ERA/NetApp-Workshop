@@ -34,7 +34,7 @@ class ResultListener(Node):
 
         self.subscription_chatter = self.create_subscription(
             String,
-            'chatter',
+            'results',
             self.listener_chatter_callback,
             10
         )
