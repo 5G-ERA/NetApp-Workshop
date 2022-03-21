@@ -17,7 +17,7 @@ Before the start of this workshop, please make sure that you complete all steps 
 
 The 5G-ERA Reference NetApp aims to present concept and usage of 5G-ERA Machine Learning (ML) Services. These ML services cover tasks as *object detection, object detection with movement evaluation, object classification, semantic segmentation, etc.*
 
-These tasks may be hard to complete on robotic platforms, where EDGE/CLOUD processing takes place instead. This is exactly the place for 5G-ERA ML Services. This workshop covers demonstration usage of such ML service providing simple face detection.
+These tasks may be hard to complete on robotic platforms, and EDGE/CLOUD processing can be more appropriate instead. This is exactly the place for 5G-ERA ML Services. This workshop covers demonstration usage of such ML service providing simple face detection.
 
 In this workshop, we will omit the communication between robots and 5G-ERA Middleware, which is service responsible for correct deployment of 5G-ERA ML Services (NetApps).
 
@@ -36,7 +36,7 @@ Two different variants of ML services are provided - **Standalone** and **Distri
 
 #### Standalone version
 
-Represents a concept, where complete ML service logic is integrated inside a single application. There is only ROS2 communication between robots and ML service. Data flow inside the application is based on internal queues (Python).
+Standalone version of NetApp represents a concept, where complete ML service logic is integrated inside a single application. There is only ROS2 communication between robots and ML service. Data flow inside the application is based on internal queues (Python).
 
 ADVANTAGES: Fast processing, latencies close to zero (data processing). Ready for image sequences dependent processing (e.g. object movement evaluation).
 
@@ -52,9 +52,9 @@ ADVANTAGES: Distributed processing. Possibility of scaling using more workers.
 DISADVANTAGES: Slower processing, bigger latencies. A limited number of ML services suitable for distributed processing. 
 
 
-**Unified communication interface** is important in concept of 5G-ERA ML Services. Different ML services requires various types of data. In our concept, communication between robots and ML service is created in ROS2. 
+**Unified communication interface** is important in concept of 5G-ERA ML Services. Different ML services require various types of data. In our concept, communication between robots and ML service is created in ROS2. 
 
-In the animation below, you will see how a robot makes a request for processing data using ML service. The robot sends request through *ML Control Service* (ROS2 service) to begin communication. ML Control Service deploys new ROS2 node with dedicated data subscriber / result publisher topics. Subsequently, the robot is sending data and obtaining results using these two topics.
+In the animation below, you will see how a robot makes a request for processing data using ML service. The robot sends the request through *ML Control Service* (ROS2 service) to begin communication. ML Control Service deploys new ROS2 node with dedicated data subscriber / result publisher topics. Subsequently, the robot is sending data and obtaining results using these two topics.
 
 ![Principle of 5G-ERA NetApp](Documentation/Images/ML_service_principles.gif "ML service principles")
 
@@ -313,7 +313,7 @@ env:
 - name: CELERY_RESULT_BACKEND
     value: "redis://localhost/"
 ```
-Each of the four parts described previously may be deployed into different Kubernetes clusters. Only two conditions have to be met.
+Each of the four parts described previously may be deployed into different Kubernetes clusters. Only two conditions have to be met:
 
 1. ML interface has to be visible for robots, wanting to process data.
 2. Correct external IP addresses for RabbitMQ and Redis has to be set everywhere.
