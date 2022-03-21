@@ -334,7 +334,7 @@ class RobotLogic(Node):
             # Create image message.
             if ret:
                 frame = cv2.resize(frame, (640, 360))
-                image_message = cv2.resize(image_message, (640, 360))
+                image_message = self.br.cv2_to_imgmsg(frame)
             else:
                 self.get_logger().info('Video is not available')
                 if self.robot_ml_control_services_client and self.robot_ml_control_services_client.service_is_running():
