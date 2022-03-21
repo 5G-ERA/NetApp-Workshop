@@ -1,6 +1,6 @@
 # 5G-ERA ML Control Service
 
-[Back to overview](Step-by-step.md)
+[Back to overview](../README.md)
 
 This document describes the interface of the 5G-ERA ML Control Service interface for communication between robots and provided machine learning services. The robot has to implement this interface to be able to use 5G-ERA ML Services. Parameters for each specific service are provided with a description.
 
