@@ -11,7 +11,7 @@ The workshop will cover the following topics:
 * Standalone NetApp deployment in Kubernetes
 * Distributed NetApp deployment in Kubernetes
 
-Before the start of this workshop, please be sure, that you complete all steps from [Prerequisities](Prerequisites.md).
+Before the start of this workshop, please be sure, that you complete all steps from [Prerequisities](Documentation/Prerequisites.md).
 
 ## Introduction to the 5G-ERA Reference NetApp
 
@@ -32,7 +32,7 @@ In this workshop, we will omit the communication between robots and 5G-ERA Middl
 
 Two different variants of ML services are provided - **Standalone** and **Distributed** version of NetApp / ML service.
 
-![Standalone vs. distributed concept](Images/WP4_distibuted_service_standalone_distributed.png "Standalone vs. distributed concept")
+![Standalone vs. distributed concept](Documentation/Images/WP4_distibuted_service_standalone_distributed.png "Standalone vs. distributed concept")
 
 #### Standalone version
 
@@ -56,7 +56,7 @@ DISADVANTAGES: Slower processing, bigger latencies. A limited number of ML servi
 
 In animation below, you will see how is robot making request for processing data using ML service. Robot sends request through *ML Control Service* (ROS2 service) to begin communication. ML Control Service deploys new ROS2 node with dedicated data subsriber / result publisher topics. Robot starts sending data and processing results using this topics.
 
-![Principle of 5G-ERA NetApp](Images/ML_service_principles.gif "ML service principles")
+![Principle of 5G-ERA NetApp](Documentation/Images/ML_service_principles.gif "ML service principles")
 
 ## Let's start
 
@@ -84,7 +84,7 @@ The commands above assume that the NetApp-Workshop repository is in the home dir
 ## Basic example
 In this example, we will use three parts of `ros2_5g_era_basic_example` package (`ml_service`, `image_publisher`, `results_listener`). 
 
-![Basic Example Scheme](Images/Scheme_Basic_example.png "Basic Example Scheme")
+![Basic Example Scheme](Documentation/Images/Scheme_Basic_example.png "Basic Example Scheme")
 This figure represents structure of this example.
 
 First, we start the `ml_service` with the `DummyDetector` worker thread inside. At the start, `ml_service` will generate names for input and output topics that will be used by `image_publisher` and `results_listener`.
@@ -113,12 +113,12 @@ ros2 run ros2_5g_era_basic_example image_publisher --ros-args --remap images:=/r
 
 ## Standalone ML service - Basics
 
-Before the start of this part, the communication interface between robot and ML services has to be defined - [5G-ERA ML Control Service Interface](CSS_Interface.md). 
+Before the start of this part, the communication interface between robot and ML services has to be defined - [5G-ERA ML Control Service Interface](Documentation/CSS_Interface.md). 
 This communication interface needs to be implemented by the robot in order to use any of the ML services.
 
 Let's start our *Object Detection ML NetApp* in a standalone variant. For the purpose of this workshop, this service is implemented with a simple Face Detector from OpenCV library. The output of this object detection service is the `bounding box [x,y,w,h]` around people's faces. For completness, this service also returns `object class` and `detection score`.
 
-![Standalone (basics) scheme](Images/Scheme_Standalone_basics.png "Standalone (basics) Scheme")
+![Standalone (basics) scheme](Documentation/Images/Scheme_Standalone_basics.png "Standalone (basics) Scheme")
 This figure represents structure of this example.
 
 In this example, we will use `ml_service` part of `ros2_5g_era_object_detection_standalone_py` package, `image_publisher`, `results_listener` from previous example and definition of `ros2_5g_era_service_interfaces` for service call.
@@ -208,7 +208,7 @@ ros2 service call robot_logic/stop_service ros2_5g_era_robot_interfaces/srv/Stop
 ## Standalone ML service in Kubernetes
 
 Let's move on from the host system and deploy Standalone ML Service in Kubernetes. In this workshop, will we use `microk8s`, which is already prepared in **Workshop VM**. Update of configuration YAML files for Multus may be needed. We can check that using
-[Kubernetes Deploy instructions](../NetApp_k8s_deploy/README.md).
+[Kubernetes Deploy instructions](NetApp_k8s_deploy/README.md).
 
 ### Simple Robot
 
@@ -225,7 +225,7 @@ After that, the robot simply reads a video file and sends individual video frame
 
 ### Deploy and test
 
-![Standalone (Kubernetes) scheme](Images/Scheme_Standalone_Kubernetes.png "Standalone (Kubernetes) scheme")
+![Standalone (Kubernetes) scheme](Documentation/Images/Scheme_Standalone_Kubernetes.png "Standalone (Kubernetes) scheme")
 This figure represents structure of this example.
 
 First of all, the ML Service has to be deployed in the Kubernetes cluster. Multus configuration was already checked.
@@ -291,11 +291,11 @@ The Distributed Machine Learning service is composed of multiple parts, which ar
 3. **Workers** - One or more instances of machine learning service (object detection) serving tasks.
 4. **Result storage** - Celery backend for storing results of finished tasks. (Redis)
 
-![Distributed (Kubernetes) scheme](Images/ML_Distributed_highlevel.png "Distributed ML service scheme (high level).")
+![Distributed (Kubernetes) scheme](Documentation/Images/ML_Distributed_highlevel.png "Distributed ML service scheme (high level).")
 This figure shows high-level concepts and different types of communication used for *distributed ML service*.
 
 ### Deploy and test
-![Distributed (Kubernetes) scheme](Images/Scheme_Distributed_Kubernetes.png "Distributed ML service scheme.")
+![Distributed (Kubernetes) scheme](Documentation/Images/Scheme_Distributed_Kubernetes.png "Distributed ML service scheme.")
 This figure represents structure of this example.
 
 All parts of distributed ML service and their components are defined in `5gera_ml_service_distributed.yaml`. There are two environment variables, which has to be set properly:
@@ -313,7 +313,7 @@ Each of the four parts described previously may be deployed into different Kuber
 2. Correct external IP addresses for RabbitMQ and Redis has to be set everywhere.
 
 
-![Kubernetes cluest visualisation](Images/K8S_cluster_distributed_variant.png "Kubernetes cluest visualisation")
+![Kubernetes cluest visualisation](Documentation/Images/K8S_cluster_distributed_variant.png "Kubernetes cluest visualisation")
 This figure shows visualisation of Kubernetes cluster and connections between pods and services. This structure will be deployed using configuration YAML file.
 
 We will deploy the distributed variant inside a single Kubernetes cluster running on one computer. Both required URLs are set to `localhost` in the deployment YAML file.
