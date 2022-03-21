@@ -6,11 +6,11 @@ Online version of this file is available [here](https://github.com/5G-ERA/NetApp
 
 ## Workshop environment ready
 
-This workshop builds on environment used in 5G-ERA Workshop 1 - "5G-ERA Middleware". Workshop attendents have to use this environment. In case, that your environment is not ready, you may download prepared virtual machine or configure your host system following configuration instructions. Both were created by University of Bedfordshire for 5G-ERA Workshop 1
+This workshop builds on environment used in 5G-ERA Workshop 1 - "5G-ERA Middleware". Workshop attendents have to use this environment. In case, that your environment is not ready, you may download prepared virtual machine or configure your host system following configuration instructions. Both were created by University of Bedfordshire for 5G-ERA Workshop 1.
 
 * [Workshop VM](https://universityofbedfordshire-my.sharepoint.com/:u:/g/personal/bartosz_bratus_study_beds_ac_uk/ETj6QI5cNN9Bv11wi6bRL4sBrF89RMamMbJ3pfcN8i2W6w?e=zAwf6c) (Size: 5GB. Hosted by University of Bedfordshire - Sharepoint)
 * [Workshop VM - Mirror](https://nextcloud.fit.vutbr.cz/s/8HycYLqawximqrf) (Size: 5GB. Hosted by Brno Univesity of Technology - Nextcloud)
-* [VM Confiugration](VM_configuration.md)
+* [VM Configuration](VM_configuration.md)
 
 ### VirtualBox host network
 For freshly installed VirtualBox it is necessary to create VirtualBox Host Network to get the downloaded image running.
@@ -91,7 +91,7 @@ bash install_dependencies.sh
 source set_environment.sh
 ```
 #### Optional - Configure tmux
-Presenter of this workshop will `Terminal Multiplexer` with additional configuration for better experience. We will use the possibility to split window horizontally / vertically and supplement multiple terminal windows with one instance only.
+Presenter of this workshop will use `Terminal Multiplexer` with additional configuration for better experience. We will use the possibility to split window horizontally / vertically and supplement multiple terminal windows with one instance only.
 
 `bind-key` is kept in default setting to `Ctrl+b`. Bind key has to be pressed firstly, then released and followed by another defined key.
 
