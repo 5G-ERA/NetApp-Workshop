@@ -284,7 +284,6 @@ Delete deployed ML service using the following command.
 
 ```bash
 kubectl delete deployment.apps/ros-css-deployment
-# TODO: Check deployment name
 ```
 
 ## Distributed ML service in Kubernetes
