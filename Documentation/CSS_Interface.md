@@ -6,11 +6,11 @@ This document describes the interface of the 5G-ERA ML Control Service interface
 
 
 ```ros
-/control_service/Start
-/control_service/Stop
-/control_service/StateSet
-/control_service/StateGet
-/control_service/StateReset
+/ml_control_services/Start
+/ml_control_services/Stop
+/ml_control_services/StateSet
+/ml_control_services/StateGet
+/ml_control_services/StateReset
 ```
 
 ## Start Service

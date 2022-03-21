@@ -104,17 +104,17 @@ DISADVANTAGES: Possibly lower number of connected robots to a single instance of
 ros2 run ros2_5g_era_object_detection_standalone_py ml_service
 ```
 
-After it is started, the `ml_service` waits for clients (robots) to connect. We can see, that ROS2 services provided by the `control_service` node are now available.
+After it is started, the `ml_service` waits for clients (robots) to connect. We can see, that ROS2 services provided by the `ml_control_services` node are now available.
 
 ```bash
 # TODO: output of `ros2 node list` maybe `ros2 service list` ??
 ```
 
-We will simulate robot behaviour and complete ROS2 service call to `/control_service/start` service using `ros2_5g_era_service_interfaces/Start` interfaces.
+We will simulate robot behaviour and complete ROS2 service call to `/ml_control_services/start` service using `ros2_5g_era_service_interfaces/Start` interfaces.
 
 ```bash
 # Terminal 2 - Service call - Start
-ros2 service call /control_service/start ros2_5g_era_service_interfaces/Start 
+ros2 service call /ml_control_services/start ros2_5g_era_service_interfaces/Start 
 ```
 
 
@@ -139,7 +139,7 @@ ros2 run ros2_5g_era_basic_example image_publisher --ros-args --remap images:=/t
 We can call `Stop service` with parameter `task_id: "{id}"` where `{id}` is the UUID generated for this task by ML Service, when `Start service` was called.
 ```bash
 # Terminal 2 - Service call - Stop
-ros2 service call /control_service/stop ros2_5g_era_service_interfaces/Stop 'task_id: "{id}"'
+ros2 service call /ml_control_services/stop ros2_5g_era_service_interfaces/Stop 'task_id: "{id}"'
 ```
 
 <!-- 
@@ -153,7 +153,7 @@ ros2 run ros2_5g_era_robot_py robot_node
 
 # Terminal 3
 ## Start 
-ros2 service call robot_logic/start_service ros2_5g_era_robot_interfaces/srv/StartService "{service_base_name: /control_service}"
+ros2 service call robot_logic/start_service ros2_5g_era_robot_interfaces/srv/StartService "{service_base_name: /ml_control_services}"
 
 ## Stop
 ros2 service call robot_logic/stop_service ros2_5g_era_robot_interfaces/srv/StopService
@@ -203,7 +203,7 @@ Let's watch, what topics are available every 1 second.
 watch -n 1 "ros2 topic list"
 ```
 
-After ML service deployment in Kubernetes, we can start `robot_node` and launch data processing using `robot_logic/start_service` call. Processing will stop after `robot_logic/stop_service` call.
+After ML service deployment in Kubernetes, we can start `robot_node` with default node name `robot_logic` and launch data processing using `robot_logic/start_service` call. Processing will stop after `robot_logic/stop_service` call.
 
 ```bash
 # Terminal 3
@@ -215,6 +215,20 @@ ros2 service call robot_logic/start_service ros2_5g_era_robot_interfaces/srv/Sta
 
 ## Stop
 ros2 service call robot_logic/stop_service ros2_5g_era_robot_interfaces/srv/StopService
+```
+
+Another robot with a different name (e.g. `robot_logic_2`) can be started using a command line parameter.
+
+```bash
+# Terminal 5
+ros2 run ros2_5g_era_robot_py robot_node -n robot_logic_2
+
+# Terminal 4
+## Start 
+ros2 service call robot_logic_2/start_service ros2_5g_era_robot_interfaces/srv/StartService "{service_base_name: /ml_control_services}"
+
+## Stop
+ros2 service call robot_logic_2/stop_service ros2_5g_era_robot_interfaces/srv/StopService
 ```
 
 Delete deployed ML service using the following command.
@@ -300,7 +314,7 @@ Let's watch, what topics are available every 1 second.
 watch "ros2 topic list"
 ```
 
-After ML service deployment in Kubernetes, we can start `robot_node` and launch data processing using `robot_logic/start_service` call. Processing will stop after `robot_logic/stop_service` call. 
+After ML service deployment in Kubernetes, we can start `robot_node` with default node name `robot_logic` and launch data processing using `robot_logic/start_service` call. Processing will stop after `robot_logic/stop_service` call. 
 ```bash
 # Terminal 3
 ros2 run ros2_5g_era_robot_py robot_node

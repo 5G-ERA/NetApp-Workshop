@@ -253,7 +253,7 @@ class DummyDetector(ThreadBase):
 class ControlService(Node):
 
     def __init__(self, executor: Executor, robot_nodes: TaskNodesDict, image_queue) -> None:
-        super().__init__('control_service')
+        super().__init__('ml_control_services')
 
         self._executor = executor
         self._robot_nodes = robot_nodes

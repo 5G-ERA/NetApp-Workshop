@@ -25,13 +25,13 @@ Fourth terminal (same dir), commands to robots:
 ```console
 source install/setup.sh
 ```
-External command to the first robot (robot_logic - start_service) that the robot_ml_control_services_client send a ml_control_services request with the base name "ml_service" with a request to assign topic names and start the service (ml_service_start).
+External command to the first robot (robot_logic - start_service) that the robot_ml_control_services_client send a ml_control_services request with the base name "ml_control_services" with a request to assign topic names and start the service (ml_service_start).
 ```console
-ros2 service call robot_logic/start_service ros2_5g_era_robot_interfaces/srv/StartService "{service_base_name: ml_service}"
+ros2 service call robot_logic/start_service ros2_5g_era_robot_interfaces/srv/StartService "{service_base_name: ml_control_services}"
 ```
-External command to the second robot (robot_logic_2 - start_service) that the robot_ml_control_services_client send a ml_control_services request with the base name "ml_service" with a request to assign topic names and start the service (ml_service_start).
+External command to the second robot (robot_logic_2 - start_service) that the robot_ml_control_services_client send a ml_control_services request with the base name "ml_control_services" with a request to assign topic names and start the service (ml_service_start).
 ```console
-ros2 service call robot_logic_2/start_service ros2_5g_era_robot_interfaces/srv/StartService "{service_base_name: ml_service}"
+ros2 service call robot_logic_2/start_service ros2_5g_era_robot_interfaces/srv/StartService "{service_base_name: ml_control_services}"
 ```
 External command to the first robot (robot_logic - stop_service) that robot_ml_control_services_client send a ml_control_services request to stop the service (ml_service_stop).
 ```console
