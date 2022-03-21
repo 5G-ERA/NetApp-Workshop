@@ -234,7 +234,7 @@ class RobotLogic(Node):
         self.get_logger().info(node_name + '/stop_service is running')
 
         # Create the timer.
-        self.timer = self.create_timer(0.1, self.image_publisher_callback)
+        self.timer = self.create_timer(0.2, self.image_publisher_callback)
 
         # Create a VideoCapture object.
         # The argument '0' gets the default webcam.
@@ -333,7 +333,8 @@ class RobotLogic(Node):
             ret, frame = self.video_capture.read()
             # Create image message.
             if ret:
-                image_message = self.br.cv2_to_imgmsg(frame)
+                frame = cv2.resize(frame, (640, 360))
+                image_message = cv2.resize(image_message, (640, 360))
             else:
                 self.get_logger().info('Video is not available')
                 if self.robot_ml_control_services_client and self.robot_ml_control_services_client.service_is_running():
