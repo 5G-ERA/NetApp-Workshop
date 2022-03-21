@@ -15,6 +15,20 @@ Before start of this workshop, please be sure, that you complete all steps from 
 
 ## Introduction to the 5G-ERA Reference NetApp
 
+The 5G-ERA Reference NetApp aims to.... 
+## TODO: Doplnit text sem!!!
+
+In this workshop, we will omit the communication between robots and 5G-ERA Middleware, which is service responsible for correct deployment of 5G-ERA ML Services (NetApps).
+
+## Terms definition
+
+* ML Service
+* ML Control Service / Control Service Server
+* ML Control Service Client / Control Service Client
+* Robot Logic Service
+
+### Concept of 5G-ERA Reference NetApp
+
 ![Principle of 5G-ERA NetApp](Images/ML_service_principles.gif "ML service principles")
 
 ## Let's start
@@ -197,7 +211,7 @@ ros2 run ros2_5g_era_robot_py robot_node
 
 # Terminal 4
 ## Start 
-ros2 service call robot_logic/start_service ros2_5g_era_robot_interfaces/srv/StartService "{service_base_name: /control_service}"
+ros2 service call robot_logic/start_service ros2_5g_era_robot_interfaces/srv/StartService "{service_base_name: /ml_control_services}"
 
 ## Stop
 ros2 service call robot_logic/stop_service ros2_5g_era_robot_interfaces/srv/StopService
@@ -293,7 +307,7 @@ ros2 run ros2_5g_era_robot_py robot_node
 
 # Terminal 4
 ## Start 
-ros2 service call robot_logic/start_service ros2_5g_era_robot_interfaces/srv/StartService "{service_base_name: /control_service}"
+ros2 service call robot_logic/start_service ros2_5g_era_robot_interfaces/srv/StartService "{service_base_name: /ml_control_services}"
 
 ## Stop
 ros2 service call robot_logic/stop_service ros2_5g_era_robot_interfaces/srv/StopService
@@ -302,6 +316,13 @@ ros2 service call robot_logic/stop_service ros2_5g_era_robot_interfaces/srv/Stop
 Delete all deployments and services
 
 ```bash
+kubectl delete --all deployments
+kubectl delete --all services
+```
+
+
+<!--
+```bash
 kubectl delete deployment.apps/ml-worker-deployment
 kubectl delete deployment.apps/distributed-css-deployment
 kubectl delete deployment.apps/redis-deployment
@@ -309,3 +330,5 @@ kubectl delete deployment.apps/rabbit-deployment
 kubectl delete service/rabbitmq-service
 kubectl delete service/redis-service
 ```
+-->
+
