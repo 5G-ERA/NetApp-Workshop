@@ -57,7 +57,7 @@ The commands above assume that the NetApp-Workshop repository is in the home dir
 ## Basic example
 In this example, we will use three parts of `ros2_5g_era_basic_example` package (`ml_service`, `image_publisher`, `results_listener`). 
 Scheme ...
-![ALT: Image placeholder](Images/Scheme_Basic_example.png "Basic Example Scheme")
+![Basic Example Scheme](Images/Scheme_Basic_example.png "Basic Example Scheme")
 
 First, we start the `ml_service` with the `DummyDetector` worker thread inside. At the start, `ml_service` will generate names for input and output topics that will be used by `image_publisher` and `results_listener`.
 
@@ -90,7 +90,7 @@ This communication interface needs to be implemented by the robot in order to us
 
 In this example, we will use `ml_service` part of `ros2_5g_era_object_detection_standalone_py` package, `image_publisher`, `results_listener` from previous example and definition of `ros2_5g_era_service_interfaces` for service call.
 
-![ALT: Image placeholder](Images/image-placeholder.jpg "IMAGE_PLACEHOLDER_CAPTION")
+![Standalone (basics) scheme](Images/Scheme_Standalone_basics.png "Standalone (basics) Scheme")
 
 Let's start our *Object Detection ML NetApp* in a standalone variant. For the purpose of this workshop, this service is implemented with a simple Face Detector from OpenCV library. The output of this object detection service is the `bounding box [x,y,w,h]` around people's faces. For completness, this service also returns `object class` and `detection score`.
 
@@ -126,7 +126,7 @@ After that, we can start the `result_listener` and `image_publisher` from the `r
 
 ```bash
 # Termial 3
-ros2 run ros2_5g_era_basic_example result_listener --ros-args --remap chatter:=/tasks/{id}/results
+ros2 run ros2_5g_era_basic_example result_listener --ros-args --remap results:=/tasks/{id}/results
 # or
 ros2 topic echo /tasks/{id}/results
 
@@ -162,7 +162,7 @@ ros2 service call robot_logic/stop_service ros2_5g_era_robot_interfaces/srv/Stop
 
 ## Standalone ML service in Kubernetes
 
-![ALT: Image placeholder](Images/image-placeholder.jpg "IMAGE_PLACEHOLDER_CAPTION")
+![Standalone (Kubernetes) scheme](Images/Scheme_Standalone_Kubernetes.png "Standalone (Kubernetes) scheme")
 
 Modules: Robot / ML_service
 
@@ -250,7 +250,10 @@ ADVANTAGES: Distributed processing. Possibility of scaling using more workers.
 
 DISADVANTAGES: Slower processing, bigger latencies. A limited number of ML services suitable for distributed processing. 
 
-![ALT: Image placeholder](Images/image-placeholder.jpg "Distributed ML service scheme.")
+![Distributed (Kubernetes) scheme](Images/ML_Distributed_highlevel.png "Distributed ML service scheme (high level).")
+
+
+![Distributed (Kubernetes) scheme](Images/Scheme_Distributed_Kubernetes.png "Distributed ML service scheme.")
 
 ### Deploy and test
 All parts of distributed ML service and their components are defined in `5gera_ml_service_distributed.yaml`. There are two environment variables, which has to be set properly:
