@@ -1,6 +1,6 @@
 # 5G-ERA Reference NetApp Workshop
 
-Robotic platforms and automation systems require to perform complex tasks from time to time to complete their goals. These complex tasks might be computationally heavy and time-consuming when not running on suitable hardware (e.g. GPU). However, such tasks/applications might be deployed on EDGE/CLOUD with better hardware and shared between multiple robots. This workshop exploits the possibilities of running such complex tasks/applications like object detection as NetApp for robotic and automation environments.
+Robotic platforms and automation systems require performing complex tasks from time to time to complete their goals. These complex tasks might be computationally heavy and time-consuming when not running on suitable hardware (e.g. GPU). However, such tasks/applications might be deployed on EDGE/CLOUD with better hardware and shared between multiple robots. This workshop exploits the possibilities of running such complex tasks/applications like object detection as NetApp for robotic and automation environments.
 
 The workshop will cover the following topics:
 
@@ -11,13 +11,13 @@ The workshop will cover the following topics:
 * Standalone NetApp deployment in Kubernetes
 * Distributed NetApp deployment in Kubernetes
 
-Before the start of this workshop, please be sure, that you complete all steps from [Prerequisities](Documentation/Prerequisites.md).
+Before the start of this workshop, please make sure that you complete all steps from [Prerequisities](Documentation/Prerequisites.md).
 
 ## Introduction to the 5G-ERA Reference NetApp
 
 The 5G-ERA Reference NetApp aims to present concept and usage of 5G-ERA Machine Learning (ML) Services. These ML services cover tasks as *object detection, object detection with movement evaluation, object classification, semantic segmentation, etc.*
 
-These tasks may be hard to complete on robotic platforms, where EDGE/CLOUD processing takes place instead. This is exactly the place for 5G-ERA ML Services. This workshop covers demonstation usage of such ML service providing simple face detection.
+These tasks may be hard to complete on robotic platforms, where EDGE/CLOUD processing takes place instead. This is exactly the place for 5G-ERA ML Services. This workshop covers demonstration usage of such ML service providing simple face detection.
 
 In this workshop, we will omit the communication between robots and 5G-ERA Middleware, which is service responsible for correct deployment of 5G-ERA ML Services (NetApps).
 
@@ -36,7 +36,7 @@ Two different variants of ML services are provided - **Standalone** and **Distri
 
 #### Standalone version
 
-Represents concept, where complete ML service logic is integrated inside single application. There is only ROS2 communication between robots and ML service. Data flow inside application is based on internal queues (Python).
+Represents a concept, where complete ML service logic is integrated inside a single application. There is only ROS2 communication between robots and ML service. Data flow inside the application is based on internal queues (Python).
 
 ADVANTAGES: Fast processing, latencies close to zero (data processing). Ready for image sequences dependent processing (e.g. object movement evaluation).
 
@@ -45,7 +45,7 @@ DISADVANTAGES: Possibly lower number of connected robots to a single instance of
 
 #### Distributed version 
 
-On the other hand, distributed version combines ROS2 communication with distributed data processing using Celery workers. From ML Service interface (entry point) are data for processing transmitted to workers over *Advanced Message Queuing Protocol (AMQP)*.
+On the other hand, distributed version combines ROS2 communication with distributed data processing using Celery workers. Data for processing are transmitted from ML Service interface (entry point) to workers over *Advanced Message Queuing Protocol (AMQP)*.
 
 ADVANTAGES: Distributed processing. Possibility of scaling using more workers.
 
@@ -54,13 +54,13 @@ DISADVANTAGES: Slower processing, bigger latencies. A limited number of ML servi
 
 **Unified communication interface** is important in concept of 5G-ERA ML Services. Different ML services requires various types of data. In our concept, communication between robots and ML service is created in ROS2. 
 
-In animation below, you will see how is robot making request for processing data using ML service. Robot sends request through *ML Control Service* (ROS2 service) to begin communication. ML Control Service deploys new ROS2 node with dedicated data subsriber / result publisher topics. Robot starts sending data and processing results using this topics.
+In the animation below, you will see how a robot makes a request for processing data using ML service. The robot sends request through *ML Control Service* (ROS2 service) to begin communication. ML Control Service deploys new ROS2 node with dedicated data subscriber / result publisher topics. Subsequently, the robot is sending data and obtaining results using these two topics.
 
 ![Principle of 5G-ERA NetApp](Documentation/Images/ML_service_principles.gif "ML service principles")
 
 ## Let's start
 
-First of all, we will get the newest version of source files for this workshop, build the ROS2 packages and ensure, that we will have built packages available in all terminal windows by updating `.bashrc` one last time.
+First of all, we will get the newest version of source files for this workshop, build the ROS2 packages and ensure that we will have the built packages available in all terminal windows by updating `.bashrc` one last time.
 
 ### Update repository and build ROS2 5G-ERA Reference NetApp
 ```bash
@@ -82,13 +82,13 @@ source ~/.bashrc
 The commands above assume that the NetApp-Workshop repository is in the home directory.
 
 ## Basic example
-In this example, we will use three parts of `ros2_5g_era_basic_example` package (`ml_service`, `image_publisher`, `results_listener`). 
+In this example, we will use three parts of `ros2_5g_era_basic_example` package (`ml_service`, `image_publisher`, `result_listener`). 
 
 ![Basic Example Scheme](Documentation/Images/Scheme_Basic_example.png "Basic Example Scheme")
 
 This figure represents structure of this example.
 
-First, we start the `ml_service` with the `DummyDetector` worker thread inside. At the start, `ml_service` will generate names for input and output topics that will be used by `image_publisher` and `results_listener`.
+First, we start the `ml_service` with the `DummyDetector` worker thread inside. At the start, `ml_service` will generate names for input and output topics that will be used by `image_publisher` and `result_listener`.
 
 ```bash
 # Terminal 1
@@ -105,7 +105,7 @@ In another terminal, we start the `ResultListener` node, which is originally sub
 ros2 run ros2_5g_era_basic_example result_listener --ros-args --remap results:=/robot1_results
 ```
 
-Lastly, we run `ImagePublisher` Node, which reads the video file, converts each video frame to ROS2 `Image` message, and adds current `timestamp` and `frame_id` into the message's header. The `ImagaPublisher` node is publishing results to its `images` topic.
+Lastly, we run `ImagePublisher` Node, which reads the video file, converts each video frame to ROS2 `Image` message, and adds current `timestamp` and `frame_id` into the message's header. The `ImagePublisher` node is publishing results to its `images` topic.
 
 ```bash
 # Terminal 4
@@ -123,7 +123,7 @@ Let's start our *Object Detection ML NetApp* in a standalone variant. For the pu
 
 This figure represents structure of this example.
 
-In this example, we will use `ml_service` part of `ros2_5g_era_object_detection_standalone_py` package, `image_publisher`, `results_listener` from previous example and definition of `ros2_5g_era_service_interfaces` for service call.
+In this example, we will use `ml_service` part of `ros2_5g_era_object_detection_standalone_py` package, `image_publisher`, `result_listener` from previous example and definition of `ros2_5g_era_service_interfaces` for service call.
 
 ```bash
 # Terminal 1
@@ -159,7 +159,9 @@ ros2 service call /ml_control_services/start ros2_5g_era_service_interfaces/Star
 ```
 
 
-**Control Service Server** inside running instance of `ml_service` there will be generated a unique identifier for this task (UUID) and launched a new ROS2 node with dedicated `ImageSubscriber` and `ResultPublisher` objects for this task, generating `/tasks/{id}/data` and `/tasks/{id}/results` topics, where `{id}` is the UUID.
+**Control Service Server** inside running instance of `ml_service` generates a unique identifier (UUID) for this task, launches a new ROS2 node with dedicated `ImageSubscriber` and `ResultPublisher` objects for this task, and creates `/tasks/{id}/data` and `/tasks/{id}/results` topics, where `{id}` is the UUID.
+
+The output can look like this:
 
 ```bash
 ros@ros-VM:~$ ros2 service call /ml_control_services/start ros2_5g_era_service_interfaces/Start
@@ -303,7 +305,7 @@ This figure shows high-level concepts and different types of communication used 
 
 This figure represents structure of this example.
 
-All parts of distributed ML service and their components are defined in `5gera_ml_service_distributed.yaml`. There are two environment variables, which has to be set properly:
+All parts of distributed ML service and their components are defined in `5gera_ml_service_distributed.yaml`. There are two environment variables that have to be set properly:
 
 ```yaml
 env:
