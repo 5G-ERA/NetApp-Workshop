@@ -56,7 +56,7 @@ The commands above assume that the NetApp-Workshop repository is in the home dir
 
 ## Basic example
 In this example, we will use three parts of `ros2_5g_era_basic_example` package (`ml_service`, `image_publisher`, `results_listener`). 
-
+Scheme ...
 ![ALT: Image placeholder](Images/Scheme_Basic_example.png "Basic Example Scheme")
 
 First, we start the `ml_service` with the DummyDetector worker thread inside. At the start, `ml_service` will generate a specified number of input data and output results topic. These topics will be further used later (`image_publisher`, `results_listener`).
