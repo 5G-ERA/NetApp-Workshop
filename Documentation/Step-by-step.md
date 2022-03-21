@@ -8,7 +8,7 @@ The workshop will cover the following topics:
 * Explanation of the NetApp Interface
 * Requirements for robotic platforms
 * A simple scenario in ROS2 environment
-* Single-instance (Standalone) NetApp deployment in Kubernetes
+* Standalone NetApp deployment in Kubernetes
 * Distributed NetApp deployment in Kubernetes
 
 Before the start of this workshop, please be sure, that you complete all steps from [Prerequisities](Prerequisites.md).
@@ -56,8 +56,9 @@ The commands above assume that the NetApp-Workshop repository is in the home dir
 
 ## Basic example
 In this example, we will use three parts of `ros2_5g_era_basic_example` package (`ml_service`, `image_publisher`, `results_listener`). 
-Scheme ...
-![ALT: Image placeholder](Images/Scheme_Basic_example.png "Basic Example Scheme")
+
+![Basic Example Scheme](Images/Scheme_Basic_example.png "Basic Example Scheme")
+This figure represents structure of this example.
 
 First, we start the `ml_service` with the `DummyDetector` worker thread inside. At the start, `ml_service` will generate names for input and output topics that will be used by `image_publisher` and `results_listener`.
 
@@ -88,15 +89,17 @@ ros2 run ros2_5g_era_basic_example image_publisher --ros-args --remap images:=/r
 Before the start of this part, the communication interface between robot and ML services has to be defined - [5G-ERA ML Control Service Interface](CSS_Interface.md). 
 This communication interface needs to be implemented by the robot in order to use any of the ML services.
 
-In this example, we will use `ml_service` part of `ros2_5g_era_object_detection_standalone_py` package, `image_publisher`, `results_listener` from previous example and definition of `ros2_5g_era_service_interfaces` for service call.
-
-![ALT: Image placeholder](Images/image-placeholder.jpg "IMAGE_PLACEHOLDER_CAPTION")
-
 Let's start our *Object Detection ML NetApp* in a standalone variant. For the purpose of this workshop, this service is implemented with a simple Face Detector from OpenCV library. The output of this object detection service is the `bounding box [x,y,w,h]` around people's faces. For completness, this service also returns `object class` and `detection score`.
 
 ADVANTAGES: Fast processing, latencies close to zero (data processing). Ready for image sequences dependent processing (e.g. object movement evaluation).
 
 DISADVANTAGES: Possibly lower number of connected robots to a single instance of the ML service (hardware dependent).
+
+
+![Standalone (basics) scheme](Images/Scheme_Standalone_basics.png "Standalone (basics) Scheme")
+This figure represents structure of this example.
+
+In this example, we will use `ml_service` part of `ros2_5g_era_object_detection_standalone_py` package, `image_publisher`, `results_listener` from previous example and definition of `ros2_5g_era_service_interfaces` for service call.
 
 ```bash
 # Terminal 1
@@ -106,7 +109,22 @@ ros2 run ros2_5g_era_object_detection_standalone_py ml_service
 After it is started, the `ml_service` waits for clients (robots) to connect. We can see, that ROS2 services provided by the `ml_control_services` node are now available.
 
 ```bash
-# TODO: output of `ros2 node list` maybe `ros2 service list` ??
+ros2 service list
+```
+
+OUTPUT:
+```
+/ml_control_services/describe_parameters
+/ml_control_services/get_parameter_types
+/ml_control_services/get_parameters
+/ml_control_services/list_parameters
+/ml_control_services/set_parameters
+/ml_control_services/set_parameters_atomically
+/ml_control_services/start
+/ml_control_services/state/get
+/ml_control_services/state/reset
+/ml_control_services/state/set
+/ml_control_services/stop
 ```
 
 We will simulate robot behaviour and complete ROS2 service call to `/ml_control_services/start` service using `ros2_5g_era_service_interfaces/Start` interfaces.
@@ -120,13 +138,18 @@ ros2 service call /ml_control_services/start ros2_5g_era_service_interfaces/Star
 **Control Service Server** inside running instance of `ml_service` there will be generated a unique identifier for this task (UUID) and launched a new ROS2 node with dedicated `ImageSubscriber` and `ResultPublisher` objects for this task, generating `/tasks/{id}/data` and `/tasks/{id}/results` topics, where `{id}` is the UUID.
 
 ```bash
-# TODO: Sample output of service call
+ros@ros-VM:~$ ros2 service call /ml_control_services/start ros2_5g_era_service_interfaces/Start
+requester: making request: ros2_5g_era_service_interfaces.srv.Start_Request(robot_worker_setting='')
+response:
+ros2_5g_era_service_interfaces.srv.Start_Response(success=True, message='', task_id='tb4a9f17340e143bc9cdfc2559dc503b3', data_topic='/tasks/tb4a9f17340e143bc9cdfc2559dc503b3/data', result_topic='/tasks/tb4a9f17340e143bc9cdfc2559dc503b3/results', worker_constraints='')
 ```
+
+
 After that, we can start the `result_listener` and `image_publisher` from the `ros2_5g_era_basic_example` package as in the previous part of this workshop. This time, we will use the generated topics for remapping.
 
 ```bash
 # Termial 3
-ros2 run ros2_5g_era_basic_example result_listener --ros-args --remap chatter:=/tasks/{id}/results
+ros2 run ros2_5g_era_basic_example result_listener --ros-args --remap results:=/tasks/{id}/results
 # or
 ros2 topic echo /tasks/{id}/results
 
@@ -162,7 +185,7 @@ ros2 service call robot_logic/stop_service ros2_5g_era_robot_interfaces/srv/Stop
 
 ## Standalone ML service in Kubernetes
 
-![ALT: Image placeholder](Images/image-placeholder.jpg "IMAGE_PLACEHOLDER_CAPTION")
+![Standalone (Kubernetes) scheme](Images/Scheme_Standalone_Kubernetes.png "Standalone (Kubernetes) scheme")
 
 Modules: Robot / ML_service
 
@@ -250,7 +273,10 @@ ADVANTAGES: Distributed processing. Possibility of scaling using more workers.
 
 DISADVANTAGES: Slower processing, bigger latencies. A limited number of ML services suitable for distributed processing. 
 
-![ALT: Image placeholder](Images/image-placeholder.jpg "Distributed ML service scheme.")
+![Distributed (Kubernetes) scheme](Images/ML_Distributed_highlevel.png "Distributed ML service scheme (high level).")
+
+
+![Distributed (Kubernetes) scheme](Images/Scheme_Distributed_Kubernetes.png "Distributed ML service scheme.")
 
 ### Deploy and test
 All parts of distributed ML service and their components are defined in `5gera_ml_service_distributed.yaml`. There are two environment variables, which has to be set properly:
