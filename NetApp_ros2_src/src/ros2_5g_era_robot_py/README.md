@@ -1,49 +1,43 @@
-# ML_Toolboxes
+# Test robot_logic - robot_ml_control_services_client - ml_control_services
 
-ML Toolboxes with unified input/output interface for 5G-ERA project.
-
-## Test robot_logic - robot_ml_control_services_client - ml_control_services
-
-Já to pouštím na Windows, ale na Linuxu by to mělo být asi takto:
-
-Instalace závislostí (ROS2 Galactic), překlad
+Instalation (ROS2 Galactic), building
 ```console
 cd ML_Toolboxes
 bash install_dependencies.sh
 colcon build
 ```
-První terminál (stejná složka), první robot (robot_logic):
+First terminal (same dir), fisrt robot (robot_logic):
 ```console
 source install/setup.sh
 ros2 run ros2_5g_era_robot_py robot_node
 ```
-Druhý terminál (stejná složka), druhý robot (robot_logic_2):
+Second terminal (same dir), second robot (robot_logic_2):
 ```console
 source install/setup.sh
 ros2 run ros2_5g_era_robot_py robot_node -n robot_logic_2
 ```
-Třetí terminál (stejná složka), control services:
+Third terminal (same dir), ML Control Services:
 ```console
 source install/setup.sh
 ros2 run ros2_5g_era_service_py service_node
 ```
-Čtvrtý terminál (stejná složka), povely robotům:
+Fourth terminal (same dir), commands to robots:
 ```console
 source install/setup.sh
 ```
-Vnější povel prvnímu robotovi (robot_logic - start_service) aby robot_ml_control_services_client poslal požadavek ml_control_services se základním názvem "ml_service" s žádostí o přidělení názvů topiců a spuštění služby (ml_service_start).
+External command to the first robot (robot_logic - start_service) that the robot_ml_control_services_client send a ml_control_services request with the base name "ml_service" with a request to assign topic names and start the service (ml_service_start).
 ```console
 ros2 service call robot_logic/start_service ros2_5g_era_robot_interfaces/srv/StartService "{service_base_name: ml_service}"
 ```
-Vnější povel druhému robotovi (robot_logic_2 - start_service) aby robot_ml_control_services_client poslal požadavek ml_control_services se základním názvem "ml_service" s žádostí o přidělení názvů topiců a spuštění služby (ml_service_start).
+External command to the second robot (robot_logic_2 - start_service) that the robot_ml_control_services_client send a ml_control_services request with the base name "ml_service" with a request to assign topic names and start the service (ml_service_start).
 ```console
 ros2 service call robot_logic_2/start_service ros2_5g_era_robot_interfaces/srv/StartService "{service_base_name: ml_service}"
 ```
-Vnější povel prvnímu robotovi (robot_logic - stop_service) aby robot_ml_control_services_client poslal požadavek ml_control_services na zastavení služby (ml_service_stop).
+External command to the first robot (robot_logic - stop_service) that robot_ml_control_services_client send a ml_control_services request to stop the service (ml_service_stop).
 ```console
 ros2 service call robot_logic/stop_service ros2_5g_era_robot_interfaces/srv/StopService
 ```
-Vnější povel druhému robotovi (robot_logic_2 - stop_service) aby robot_ml_control_services_client poslal požadavek ml_control_services na zastavení služby (ml_service_stop).
+External command to the second robot (robot_logic_2 - stop_service) that robot_ml_control_services_client send a ml_control_services request to stop the service (ml_service_stop).
 ```console
 ros2 service call robot_logic_2/stop_service ros2_5g_era_robot_interfaces/srv/StopService
 ```

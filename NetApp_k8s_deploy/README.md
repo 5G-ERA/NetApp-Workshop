@@ -32,6 +32,7 @@ The first row, starting with default, is usually the interface, used for interne
 To apply the multus settings, following command should be used:
 
 ```bash
+cd NetApp_k8s_deploy/
 kubectl apply -f multus_config.yaml
 ```
 
