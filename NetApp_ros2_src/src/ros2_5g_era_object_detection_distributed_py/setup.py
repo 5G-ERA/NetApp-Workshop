@@ -22,7 +22,7 @@ setup(
         'console_scripts': [
             'image_publisher = ros2_5g_era_object_detection_distributed_py.basic_image_publisher:main',
             'result_listener = ros2_5g_era_object_detection_distributed_py.basic_result_listener:main',
-            'ml_service = ros2_5g_era_object_detection_distributed_py.ml_service:main'
+            'ml_service = ros2_5g_era_object_detection_distributed_py.ml_service_interface:main'
         ],
     },
 )
