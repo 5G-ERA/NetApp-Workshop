@@ -42,7 +42,7 @@ kubectl apply -f multus_config.yaml
 Contains definition of one kubernetes deployment, which will run the but5gera/ros-ml_service-standalone:latest docker image with the CSS (control service server). It has the hostNetwork enabled by default, which means any the ROS2 interface of the CSS is available on the host system. The CSS is deployed using:
 
 ```bash
-kubectl apply -f 5gera_css.yaml
+kubectl apply -f 5gera_ml_service_standalone.yaml
 ```
 
 To remove the deployment, simply use
@@ -78,7 +78,7 @@ env:
 To deploy everything, just use:
 
 ```bash
-kubectl apply -f 5gera_css.yaml
+kubectl apply -f 5gera_ml_service_distributed.yaml
 ```
 
 To remove all deployments and services, use
