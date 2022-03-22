@@ -38,18 +38,18 @@ Two different variants of ML services are provided - **Standalone** and **Distri
 
 Standalone version of NetApp represents a concept, where complete ML service logic is integrated inside a single application. There is only ROS2 communication between robots and ML service. Data flow inside the application is based on internal queues (Python).
 
-ADVANTAGES: Fast processing, latencies close to zero (data processing). Ready for image sequences dependent processing (e.g. object movement evaluation).
+* **ADVANTAGES**: Fast processing, latencies close to zero (data processing). Ready for image sequences dependent processing (e.g. object movement evaluation).
 
-DISADVANTAGES: Possibly lower number of connected robots to a single instance of the ML service (hardware dependent).
+* **DISADVANTAGES**: Possibly lower number of connected robots to a single instance of the ML service (hardware dependent).
 
 
 #### Distributed version 
 
 On the other hand, distributed version combines ROS2 communication with distributed data processing using Celery workers. Data for processing are transmitted from ML Service interface (entry point) to workers over *Advanced Message Queuing Protocol (AMQP)*.
 
-ADVANTAGES: Distributed processing. Possibility of scaling using more workers.
+* **ADVANTAGES**: Distributed processing. Possibility of scaling using more workers.
 
-DISADVANTAGES: Slower processing, bigger latencies. A limited number of ML services suitable for distributed processing. 
+* **DISADVANTAGES**: Slower processing, bigger latencies. A limited number of ML services suitable for distributed processing. 
 
 
 **Unified communication interface** is important in concept of 5G-ERA ML Services. Different ML services require various types of data. In our concept, communication between robots and ML service is created in ROS2. 
@@ -77,6 +77,11 @@ echo "source $(pwd)/install/local_setup.sh" >> ~/.bashrc
 echo "## Setup environment variables" >> ~/.bashrc
 echo "source $(pwd)/set_environment.sh" >> ~/.bashrc
 source ~/.bashrc
+```
+
+### OPTIONAL - Update .tmux.conf
+```bash
+cp ~/NetApp-Workshop/.tmux.conf ~/.tmux.conf
 ```
 
 The commands above assume that the NetApp-Workshop repository is in the home directory.
