@@ -82,9 +82,10 @@ source ~/.bashrc
 ### OPTIONAL - Update .tmux.conf
 ```bash
 cp ~/NetApp-Workshop/.tmux.conf ~/.tmux.conf
+tmux
 ```
 
-The commands above assume that the NetApp-Workshop repository is in the home directory.
+<!-- The commands above assume that the NetApp-Workshop repository is in the home directory. -->
 
 ## Basic example
 In this example, we will use three parts of `ros2_5g_era_basic_example` package (`ml_service`, `image_publisher`, `result_listener`). 

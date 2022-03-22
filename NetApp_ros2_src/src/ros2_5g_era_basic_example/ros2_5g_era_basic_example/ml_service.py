@@ -289,10 +289,17 @@ def main(args=None):
 
     try:
         ros2_executor.spin()
+    except KeyboardInterrupt:
+        pass
+    except BaseException:
+        print('Exception in 5G-ERA ML Control Service:', file=sys.stderr)
+        raise
     finally:
         ros2_executor.shutdown()
         for node in ros_nodes:
             node.destroy_node()
+
+    
 
 
 if __name__ == '__main__':

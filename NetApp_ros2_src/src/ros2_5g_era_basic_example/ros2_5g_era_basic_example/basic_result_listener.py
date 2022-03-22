@@ -55,16 +55,22 @@ def main(args=None):
     # Create the node
     image_subscriber = ResultListener()
 
-    # Spin the node so the callback function is called.
-    rclpy.spin(image_subscriber)
+    try:
+        # Spin the node so the callback function is called.
+        rclpy.spin(image_subscriber)
+    except KeyboardInterrupt:
+        pass
+    except BaseException:
+        print('Exception in 5G-ERA ML Control Service:', file=sys.stderr)
+        raise
+    finally:
+        # Destroy the node explicitly
+        # (optional - otherwise it will be done automatically
+        # when the garbage collector destroys the node object)
+        image_subscriber.destroy_node()
 
-    # Destroy the node explicitly
-    # (optional - otherwise it will be done automatically
-    # when the garbage collector destroys the node object)
-    image_subscriber.destroy_node()
-
-    # Shutdown the ROS client library for Python
-    rclpy.shutdown()
+        # Shutdown the ROS client library for Python
+        rclpy.shutdown()
 
 
 if __name__ == '__main__':
