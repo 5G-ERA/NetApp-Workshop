@@ -14,7 +14,7 @@ from ros2_5g_era_service_interfaces.srv import Start
 from ros2_5g_era_service_interfaces.srv import Stop
 
 # Default 5G-ERA ML Control Services base name.
-DEFAULT_ML_SERVICE_BASE_NAME = 'ml_service'
+DEFAULT_ML_SERVICE_BASE_NAME = 'ml_control_services'
 
 
 class MLControlServices(Node):
